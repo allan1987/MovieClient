@@ -10,17 +10,27 @@ import java.io.Serializable;
 
 public class Movie implements Serializable {
 
+    private Long id;
+
     @SerializedName("vote_average")
-    private String voteAverage;
+    private Float voteAverage;
 
     @SerializedName("poster_path")
     private String posterPath;
 
-    public String getVoteAverage() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(String voteAverage) {
+    public void setVoteAverage(Float voteAverage) {
         this.voteAverage = voteAverage;
     }
 

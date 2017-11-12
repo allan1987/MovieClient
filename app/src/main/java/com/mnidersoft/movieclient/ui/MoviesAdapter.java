@@ -1,16 +1,17 @@
 package com.mnidersoft.movieclient.ui;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
 import com.mnidersoft.movieclient.model.Movie;
 import com.mnidersoft.movieclient.util.AppUtil;
+import com.mnidersoft.movieclient.util.GlideUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +33,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mContext = context;
     }
 
-    public void addModel(Movie movie) {
+    public void add(Movie movie) {
         int pos = mMovies.size();
         mMovies.add(movie);
         notifyItemInserted(pos);
     }
 
-    public void addModel(List<Movie> movies) {
+    public void addAll(List<Movie> movies) {
         mMovies.addAll(movies);
         notifyDataSetChanged();
     }
@@ -59,8 +60,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Movie movie = mMovies.get(position);
 
         MovieHolder viewHolder = (MovieHolder) holder;
-//        viewHolder.posterImage.setImageResource(movie.getPosterPath());
-//        viewHolder.ratingBar.(movie.getVoteAverage());
+        GlideUtil.loadImage(mContext, movie.getPosterPath(), viewHolder.posterImage);
+        viewHolder.ratingBar.setRating(movie.getVoteAverage() / 2);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ImageView posterImage;
 
         @BindView(R.id.movie_item_rating_bar)
-        public TextView ratingBar;
+        public AppCompatRatingBar ratingBar;
 
         public MovieHolder(View itemView) {
             super(itemView);
