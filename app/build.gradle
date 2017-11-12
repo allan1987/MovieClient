@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 def SupportV = '26.1.0'
 def Retrofit2V = '2.3.0'
 def Dagger2V = '2.11'
 def ButterknifeV = '8.6.0'
+def GlideV = '4.3.1'
 
 android {
     compileSdkVersion 26
@@ -52,7 +54,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     //Dagger 2
-    implementation "com.google.dagger:dagger:2.11"
+    implementation "com.google.dagger:dagger:$Dagger2V"
     implementation "com.google.dagger:dagger-android-support:$Dagger2V"
     annotationProcessor "com.google.dagger:dagger-compiler:$Dagger2V"
     annotationProcessor "com.google.dagger:dagger-android-processor:$Dagger2V"
@@ -61,5 +63,13 @@ dependencies {
     implementation "com.jakewharton:butterknife:$ButterknifeV"
     annotationProcessor "com.jakewharton:butterknife-compiler:$ButterknifeV"
 
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$GlideV"
+    annotationProcessor "com.github.bumptech.glide:compiler:$GlideV"
+
     testImplementation 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
