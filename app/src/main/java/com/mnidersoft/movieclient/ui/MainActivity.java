@@ -11,11 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
-import com.mnidersoft.movieclient.model.Movie;
+import com.mnidersoft.movieclient.model.MoviesResponse;
 import com.mnidersoft.movieclient.presentation.MainPresenter;
 import com.mnidersoft.movieclient.presentation.MainView;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -117,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public Disposable subscribeInto(Flowable<List<Movie>> flow) {
+    public Disposable subscribeInto(Flowable<MoviesResponse> flow) {
         mAdapter.clear();
         return flow
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        models -> mAdapter.addModel(models),
+                        moviesResponse -> mAdapter.addModel(moviesResponse.getResults()),
                         throwable -> Log.e(TAG, "Error -> " + throwable.getMessage()),
                         () -> Log.i(TAG, "Done")
                 );
@@ -133,13 +131,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mMoviesView.setLayoutManager(new LinearLayoutManager(this));
         mMoviesView.setAdapter(mAdapter);
 
-        mSwipeRefresh.setOnRefreshListener( () -> {
-                mAdapter.clear();
-                loadMovies();
-        });
+        mSwipeRefresh.setOnRefreshListener(this::refreshMovies);
     }
 
     private void loadMovies() {
         if (mPresenter != null) mPresenter.loadMovies();
+    }
+
+    private void refreshMovies() {
+        mAdapter.clear();
+        if (mPresenter != null) mPresenter.refresh();
     }
 }
