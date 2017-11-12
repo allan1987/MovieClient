@@ -18,12 +18,11 @@ public class MainPresenter {
     private MainView mView;
     private StatesCoordinator<MoviesResponse> mCoordinator;
     private LifecycleStrategist mStrategist;
-    private int mPage = 1;
+    private int mPage;
 
     public MainPresenter(RestClient restClient, MainView view,
                          StatesCoordinator<MoviesResponse> coordinator,
                          LifecycleStrategist strategist) {
-
         mRestClient = restClient;
         mView = view;
         mCoordinator = coordinator;
@@ -31,19 +30,15 @@ public class MainPresenter {
     }
 
     public void loadMovies() {
+        loadMovies(1);
+    }
+
+    public void loadMovies(int page) {
+        mPage = page;
+
         Flowable<MoviesResponse> dataFlow = mRestClient.loadMovies(mPage).compose(mCoordinator);
 
         Disposable toDispose = mView.subscribeInto(dataFlow);
         mStrategist.applyStrategy(toDispose);
-    }
-
-    public void refresh() {
-        mPage = 1;
-        loadMovies();
-    }
-
-    public void loadMore() {
-        mPage++;
-        loadMovies();
     }
 }

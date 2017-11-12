@@ -3,7 +3,7 @@ package com.mnidersoft.movieclient.ui;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
          AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
 
         init();
@@ -62,7 +64,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    private void init() {
+        mAdapter = new MoviesAdapter(this);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
+        mMoviesView.addOnScrollListener(new EndlessRecyclerScrollListener(layoutManager) {
+            @Override
+            protected void onLoadMore(int currentPage) {
+                mPresenter.loadMovies(currentPage);
+            }
+        });
+
+        mMoviesView.setLayoutManager(layoutManager);
+        mMoviesView.setAdapter(mAdapter);
+
+        mSwipeRefresh.setOnRefreshListener(() -> {
+            clear();
+            loadMovies();
+        });
+
         loadMovies();
+    }
+
+    private void loadMovies() {
+        if (mPresenter != null) mPresenter.loadMovies();
     }
 
     @Override
@@ -114,32 +142,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
         };
     }
 
+    private void clear() {
+        mAdapter.clear();
+    }
+
     @Override
     public Disposable subscribeInto(Flowable<MoviesResponse> flow) {
-        mAdapter.clear();
         return flow
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        moviesResponse -> mAdapter.addModel(moviesResponse.getResults()),
+                        moviesResponse -> mAdapter.addAll(moviesResponse.getResults()),
                         throwable -> Log.e(TAG, "Error -> " + throwable.getMessage()),
                         () -> Log.i(TAG, "Done")
                 );
-    }
-
-    private void init() {
-        mAdapter = new MoviesAdapter(this);
-        mMoviesView.setLayoutManager(new LinearLayoutManager(this));
-        mMoviesView.setAdapter(mAdapter);
-
-        mSwipeRefresh.setOnRefreshListener(this::refreshMovies);
-    }
-
-    private void loadMovies() {
-        if (mPresenter != null) mPresenter.loadMovies();
-    }
-
-    private void refreshMovies() {
-        mAdapter.clear();
-        if (mPresenter != null) mPresenter.refresh();
     }
 }
