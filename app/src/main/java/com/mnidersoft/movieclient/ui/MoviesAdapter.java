@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
 import com.mnidersoft.movieclient.model.Movie;
@@ -12,6 +14,9 @@ import com.mnidersoft.movieclient.util.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Allan.Menezes on 11/11/17.
@@ -52,9 +57,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Movie movie = mMovies.get(position);
-        MovieHolder mh = (MovieHolder) holder;
-//        vh.labelNumber.setText(movie.relatedNumber());
-//        vh.labelFact.setText(movie.formattedFact());
+
+        MovieHolder viewHolder = (MovieHolder) holder;
+//        viewHolder.posterImage.setImageResource(movie.getPosterPath());
+//        viewHolder.ratingBar.(movie.getVoteAverage());
     }
 
     @Override
@@ -64,15 +70,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public static class MovieHolder extends RecyclerView.ViewHolder {
 
-//        @BindView(R.id.label_number)
-//        public TextView labelNumber;
-//
-//        @BindView(R.id.label_fact)
-//        public TextView labelFact;
+        @BindView(R.id.movie_item_poster_image)
+        public ImageView posterImage;
+
+        @BindView(R.id.movie_item_rating_bar)
+        public TextView ratingBar;
 
         public MovieHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
