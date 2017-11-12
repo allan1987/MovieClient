@@ -18,4 +18,7 @@ public interface MovieDBService {
 
     @GET("discover/movie?vote_average.gte=5&with_release_type=2|3&api_key=" + API_KEY)
     Flowable<MoviesResponse> loadNowPlayingMovies(@Query("language") String language, @Query("page") int page);
+
+    @GET("search/movie?api_key=" + API_KEY)
+    Flowable<MoviesResponse> searchMoviesByTitle(@Query("query") String query, @Query("page") int page);
 }

@@ -7,5 +7,9 @@ package com.mnidersoft.movieclient.util
  */
 
 fun isNullOrEmpty(objects: Collection<*>?): Boolean {
-    return objects?.let { it.isEmpty() } ?: true
+    return objects?.isEmpty() ?: true
+}
+
+fun isNullOrEmpty(string: String?): Boolean {
+    return string?.isEmpty() ?: true
 }

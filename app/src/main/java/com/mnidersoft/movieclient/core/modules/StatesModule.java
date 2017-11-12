@@ -23,30 +23,30 @@ import io.reactivex.Scheduler;
 public class StatesModule {
 
     @Provides
-    static StatesCoordinator coordinator(EmptyState emptyState, ErrorState errorState,
-                                         LoadingState loadingState, NetworkErrorFeedback networkErrorFeedback) {
+    static StatesCoordinator statesCoordinator(EmptyState emptyState, ErrorState errorState,
+                                               LoadingState loadingState, NetworkErrorFeedback networkErrorFeedback) {
 
         return new StatesCoordinator(emptyState, errorState, loadingState, networkErrorFeedback);
     }
 
     @Provides
-    static LoadingState assignLoading(LoadingView view, @SchedulerUI Scheduler scheduler) {
+    static LoadingState loadingState(LoadingView view, @SchedulerUI Scheduler scheduler) {
         return new LoadingState(view, scheduler);
     }
 
     @Provides
-    static ErrorState assignError(ErrorView view, @SchedulerUI Scheduler scheduler) {
+    static ErrorState errorState(ErrorView view, @SchedulerUI Scheduler scheduler) {
         return new ErrorState(view, scheduler);
     }
 
     @Provides
-    static EmptyState coordinateEmpty(EmptyView view, @SchedulerUI Scheduler scheduler) {
+    static EmptyState emptyState(EmptyView view, @SchedulerUI Scheduler scheduler) {
         return new EmptyState(view, scheduler);
     }
 
     @Provides
-    static NetworkErrorFeedback networkFeedback(NetworkErrorView view,
-                                                @SchedulerUI Scheduler scheduler) {
+    static NetworkErrorFeedback networkErrorFeedback(NetworkErrorView view,
+                                                     @SchedulerUI Scheduler scheduler) {
         return new NetworkErrorFeedback(view, scheduler);
     }
 }

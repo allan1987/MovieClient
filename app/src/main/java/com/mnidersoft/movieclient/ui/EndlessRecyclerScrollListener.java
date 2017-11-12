@@ -53,5 +53,5 @@ public abstract class EndlessRecyclerScrollListener extends RecyclerView.OnScrol
         mLoading = true;
     }
 
-    abstract void onLoadMore(int currentPage);
+    public abstract void onLoadMore(int currentPage);
 }

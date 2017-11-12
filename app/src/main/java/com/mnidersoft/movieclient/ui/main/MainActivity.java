@@ -1,19 +1,25 @@
-package com.mnidersoft.movieclient.ui;
+package com.mnidersoft.movieclient.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
 import com.mnidersoft.movieclient.model.MoviesResponse;
-import com.mnidersoft.movieclient.presentation.MainPresenter;
-import com.mnidersoft.movieclient.presentation.MainView;
+import com.mnidersoft.movieclient.presentation.main.MainPresenter;
+import com.mnidersoft.movieclient.presentation.main.MainView;
+import com.mnidersoft.movieclient.ui.EndlessRecyclerScrollListener;
+import com.mnidersoft.movieclient.ui.MoviesAdapter;
+import com.mnidersoft.movieclient.ui.search.SearchActivity;
 
 import javax.inject.Inject;
 
@@ -47,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Inject
     protected MainPresenter mPresenter;
 
+    private MenuItem mSearchItem;
+
     private MoviesAdapter mAdapter;
 
     @Override
@@ -61,20 +69,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
         init();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void init() {
+        setTitle(R.string.main_activity_title);
+
         mAdapter = new MoviesAdapter(this);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
         mMoviesView.addOnScrollListener(new EndlessRecyclerScrollListener(layoutManager) {
             @Override
-            protected void onLoadMore(int currentPage) {
-                mPresenter.loadMovies(currentPage);
+            public void onLoadMore(int currentPage) {
+                mPresenter.loadNowPlayingMovies(currentPage);
             }
         });
 
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     private void loadMovies() {
-        if (mPresenter != null) mPresenter.loadMovies();
+        if (mPresenter != null) mPresenter.loadNowPlayingMovies();
     }
 
     @Override
@@ -155,5 +160,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
                         throwable -> Log.e(TAG, "Error -> " + throwable.getMessage()),
                         () -> Log.i(TAG, "Done")
                 );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home, menu);
+        mSearchItem = menu.findItem(R.id.action_search);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

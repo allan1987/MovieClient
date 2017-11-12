@@ -45,6 +45,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$SupportV"
     implementation "com.android.support:recyclerview-v7:$SupportV"
     implementation "com.android.support:cardview-v7:$SupportV"
+    implementation "com.android.support:design:$SupportV"
 
     //Network -> Retrofit2 + RXJava2
     implementation "com.squareup.retrofit2:retrofit:$Retrofit2V"

@@ -28,9 +28,18 @@ public class RestClient {
         if (locale != null) mLanguage = locale.getLanguage();
     }
 
-    public Flowable<MoviesResponse> loadMovies(int page) {
+    public Flowable<MoviesResponse> loadNowPlayingMovies(int page) {
         return mService
                 .loadNowPlayingMovies(mLanguage, page)
+                .subscribeOn(mScheduler)
+                .compose(new NetworkErrorHandler<>())
+                .compose(new RestErrorsHandler<>())
+                .compose(new DeserializationHandler<>());
+    }
+
+    public Flowable<MoviesResponse> searchMoviesByTitle(String query, int page) {
+        return mService
+                .searchMoviesByTitle(query, page)
                 .subscribeOn(mScheduler)
                 .compose(new NetworkErrorHandler<>())
                 .compose(new RestErrorsHandler<>())

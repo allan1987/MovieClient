@@ -6,8 +6,8 @@ import com.mnidersoft.movieclient.core.states.empty.EmptyView;
 import com.mnidersoft.movieclient.core.states.error.ErrorView;
 import com.mnidersoft.movieclient.core.states.loading.LoadingView;
 import com.mnidersoft.movieclient.core.states.networkerror.NetworkErrorView;
-import com.mnidersoft.movieclient.presentation.main.MainView;
-import com.mnidersoft.movieclient.ui.main.MainActivity;
+import com.mnidersoft.movieclient.presentation.search.SearchView;
+import com.mnidersoft.movieclient.ui.search.SearchActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,35 +18,35 @@ import dagger.Provides;
 
 @Module(includes = {StatesModule.class, LifecycleStrategistModule.class,
         PresentationModule.class})
-public class MainModule {
+public class SearchModule {
 
     @Provides
-    static MainView mainView(MainActivity activity) {
+    static SearchView searchView(SearchActivity activity) {
         return activity;
     }
 
     @Provides
-    static LoadingView loadingView(MainActivity activity) {
+    static LoadingView loadingView(SearchActivity activity) {
         return activity;
     }
 
     @Provides
-    static ErrorView errorView(MainActivity activity) {
+    static ErrorView errorView(SearchActivity activity) {
         return activity;
     }
 
     @Provides
-    static EmptyView emptyView(MainActivity activity) {
+    static EmptyView emptyView(SearchActivity activity) {
         return activity;
     }
 
     @Provides
-    static NetworkErrorView networkErrorView(MainActivity activity) {
+    static NetworkErrorView networkErrorView(SearchActivity activity) {
         return activity;
     }
 
     @Provides
-    static LifecycleOwner strategist(MainActivity activity) {
+    static LifecycleOwner strategist(SearchActivity activity) {
         return activity;
     }
 }

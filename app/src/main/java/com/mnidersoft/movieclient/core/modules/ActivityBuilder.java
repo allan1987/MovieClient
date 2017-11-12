@@ -1,6 +1,7 @@
 package com.mnidersoft.movieclient.core.modules;
 
-import com.mnidersoft.movieclient.ui.MainActivity;
+import com.mnidersoft.movieclient.ui.main.MainActivity;
+import com.mnidersoft.movieclient.ui.search.SearchActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -14,4 +15,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = MainModule.class)
     abstract MainActivity mainActivity();
+
+    @ContributesAndroidInjector(modules = SearchModule.class)
+    abstract SearchActivity searchActivity();
 }

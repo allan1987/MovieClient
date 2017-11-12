@@ -1,4 +1,4 @@
-package com.mnidersoft.movieclient.presentation;
+package com.mnidersoft.movieclient.presentation.search;
 
 import com.mnidersoft.movieclient.core.states.empty.EmptyView;
 import com.mnidersoft.movieclient.core.states.error.ErrorView;
@@ -10,10 +10,10 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Created by Allan.Menezes on 11/11/17.
+ * Created by Allan.Menezes on 11/12/17.
  */
 
-public interface MainView extends LoadingView, ErrorView, EmptyView, NetworkErrorView {
+public interface SearchView extends LoadingView, ErrorView, EmptyView, NetworkErrorView {
 
     Disposable subscribeInto(Flowable<MoviesResponse> flow);
 }
