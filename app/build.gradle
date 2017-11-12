@@ -44,6 +44,7 @@ dependencies {
     })
     implementation "com.android.support:appcompat-v7:$SupportV"
     implementation "com.android.support:recyclerview-v7:$SupportV"
+    implementation "com.android.support:cardview-v7:$SupportV"
 
     //Network -> Retrofit2 + RXJava2
     implementation "com.squareup.retrofit2:retrofit:$Retrofit2V"
@@ -67,9 +68,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$GlideV"
     annotationProcessor "com.github.bumptech.glide:compiler:$GlideV"
 
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
     testImplementation 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-}
-repositories {
-    mavenCentral()
 }
