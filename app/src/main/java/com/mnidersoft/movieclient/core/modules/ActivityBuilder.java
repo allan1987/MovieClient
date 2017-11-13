@@ -1,5 +1,6 @@
 package com.mnidersoft.movieclient.core.modules;
 
+import com.mnidersoft.movieclient.ui.details.DetailsActivity;
 import com.mnidersoft.movieclient.ui.main.MainActivity;
 import com.mnidersoft.movieclient.ui.search.SearchActivity;
 
@@ -18,4 +19,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = SearchModule.class)
     abstract SearchActivity searchActivity();
+
+    @ContributesAndroidInjector(modules = DetailsModule.class)
+    abstract DetailsActivity detailsActivity();
 }
