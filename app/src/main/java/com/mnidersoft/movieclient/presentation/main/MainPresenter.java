@@ -1,6 +1,7 @@
 package com.mnidersoft.movieclient.presentation.main;
 
 import com.mnidersoft.movieclient.core.lifecycles.LifecycleStrategist;
+import com.mnidersoft.movieclient.core.qualifiers.DefaultStates;
 import com.mnidersoft.movieclient.core.states.StatesCoordinator;
 import com.mnidersoft.movieclient.model.MoviesResponse;
 import com.mnidersoft.movieclient.restservice.RestClient;
@@ -21,7 +22,7 @@ public class MainPresenter {
     private int mPage;
 
     public MainPresenter(RestClient restClient, MainView view,
-                         StatesCoordinator<MoviesResponse> coordinator,
+                         @DefaultStates StatesCoordinator<MoviesResponse> coordinator,
                          LifecycleStrategist strategist) {
         mRestClient = restClient;
         mView = view;

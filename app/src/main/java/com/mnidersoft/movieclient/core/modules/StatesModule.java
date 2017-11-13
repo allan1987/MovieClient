@@ -1,5 +1,7 @@
 package com.mnidersoft.movieclient.core.modules;
 
+import com.mnidersoft.movieclient.core.qualifiers.DefaultStates;
+import com.mnidersoft.movieclient.core.qualifiers.DetailsStates;
 import com.mnidersoft.movieclient.core.qualifiers.SchedulerUI;
 import com.mnidersoft.movieclient.core.states.StatesCoordinator;
 import com.mnidersoft.movieclient.core.states.empty.EmptyState;
@@ -10,6 +12,8 @@ import com.mnidersoft.movieclient.core.states.loading.LoadingState;
 import com.mnidersoft.movieclient.core.states.loading.LoadingView;
 import com.mnidersoft.movieclient.core.states.networkerror.NetworkErrorFeedback;
 import com.mnidersoft.movieclient.core.states.networkerror.NetworkErrorView;
+import com.mnidersoft.movieclient.model.MovieDetails;
+import com.mnidersoft.movieclient.model.MoviesResponse;
 
 import dagger.Module;
 import dagger.Provides;
@@ -23,10 +27,17 @@ import io.reactivex.Scheduler;
 public class StatesModule {
 
     @Provides
-    static StatesCoordinator statesCoordinator(EmptyState emptyState, ErrorState errorState,
-                                               LoadingState loadingState, NetworkErrorFeedback networkErrorFeedback) {
+    @DefaultStates
+    static StatesCoordinator<MoviesResponse> fullStatesCoordinator(EmptyState emptyState, ErrorState errorState,
+                                                                   LoadingState loadingState, NetworkErrorFeedback networkErrorFeedback) {
+        return new StatesCoordinator<MoviesResponse>(emptyState, errorState, loadingState, networkErrorFeedback);
+    }
 
-        return new StatesCoordinator(emptyState, errorState, loadingState, networkErrorFeedback);
+    @Provides
+    @DetailsStates
+    static StatesCoordinator<MovieDetails> statesCoordinator(ErrorState errorState,
+                                                             LoadingState loadingState, NetworkErrorFeedback networkErrorFeedback) {
+        return new StatesCoordinator<MovieDetails>(errorState, loadingState, networkErrorFeedback);
     }
 
     @Provides
