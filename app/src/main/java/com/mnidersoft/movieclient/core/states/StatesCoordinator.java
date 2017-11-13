@@ -24,7 +24,13 @@ public class StatesCoordinator<T> implements FlowableTransformer<T, T> {
     public StatesCoordinator(EmptyState<T> emptyState, ErrorState<T> errorState,
                              LoadingState<T> loadingState, NetworkErrorFeedback<T>
                                      networkErrorFeedback) {
+        this(errorState, loadingState, networkErrorFeedback);
         mEmptyState = emptyState;
+    }
+
+    public StatesCoordinator(ErrorState<T> errorState,
+                             LoadingState<T> loadingState, NetworkErrorFeedback<T>
+                                     networkErrorFeedback) {
         mErrorState = errorState;
         mLoadingState = loadingState;
         mNetworkErrorFeedback = networkErrorFeedback;
@@ -32,10 +38,12 @@ public class StatesCoordinator<T> implements FlowableTransformer<T, T> {
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
-        return upstream
-                .compose(mEmptyState)
+        Flowable<T> flowable = upstream
                 .compose(mErrorState)
                 .compose(mLoadingState)
                 .compose(mNetworkErrorFeedback);
+
+        if (mEmptyState != null) flowable = flowable.compose(mEmptyState);
+        return flowable;
     }
 }

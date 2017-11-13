@@ -1,6 +1,7 @@
 package com.mnidersoft.movieclient.ui;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 
 import com.mnidersoft.movieclient.R;
 import com.mnidersoft.movieclient.model.Movie;
+import com.mnidersoft.movieclient.ui.details.DetailsActivity;
 import com.mnidersoft.movieclient.util.AppUtil;
 import com.mnidersoft.movieclient.util.GlideUtil;
 
@@ -27,10 +29,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Movie> mMovies = new ArrayList<>();
 
-    private Context mContext;
+    private Activity mActivity;
 
-    public MoviesAdapter(Context context) {
-        mContext = context;
+    public MoviesAdapter(Activity activity) {
+        mActivity = activity;
     }
 
     public void add(Movie movie) {
@@ -51,7 +53,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View card = LayoutInflater.from(mContext).inflate(R.layout.view_movie_item, parent, false);
+        View card = LayoutInflater.from(mActivity)
+                .inflate(R.layout.view_movie_item, parent, false);
         return new MovieHolder(card);
     }
 
@@ -60,8 +63,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Movie movie = mMovies.get(position);
 
         MovieHolder viewHolder = (MovieHolder) holder;
-        GlideUtil.loadImage(mContext, movie.getPosterPath(), viewHolder.posterImage);
+        GlideUtil.loadImage(mActivity, movie.getPosterPath(), viewHolder.posterImage);
         viewHolder.ratingBar.setRating(movie.getVoteAverage() / 2);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mActivity, DetailsActivity.class);
+                intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID, movie.getId());
+                mActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override

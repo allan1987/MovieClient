@@ -3,6 +3,7 @@ package com.mnidersoft.movieclient.restservice;
 import com.mnidersoft.movieclient.core.errors.DeserializationHandler;
 import com.mnidersoft.movieclient.core.errors.RestErrorsHandler;
 import com.mnidersoft.movieclient.core.states.networkerror.NetworkErrorHandler;
+import com.mnidersoft.movieclient.model.MovieDetails;
 import com.mnidersoft.movieclient.model.MoviesResponse;
 
 import java.util.Locale;
@@ -40,6 +41,15 @@ public class RestClient {
     public Flowable<MoviesResponse> searchMoviesByTitle(String query, int page) {
         return mService
                 .searchMoviesByTitle(query, page)
+                .subscribeOn(mScheduler)
+                .compose(new NetworkErrorHandler<>())
+                .compose(new RestErrorsHandler<>())
+                .compose(new DeserializationHandler<>());
+    }
+
+    public Flowable<MovieDetails> getMovieDetails(Long id) {
+        return mService
+                .getMovieDetails(id)
                 .subscribeOn(mScheduler)
                 .compose(new NetworkErrorHandler<>())
                 .compose(new RestErrorsHandler<>())
