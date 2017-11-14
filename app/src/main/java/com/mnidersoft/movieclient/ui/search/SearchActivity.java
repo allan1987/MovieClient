@@ -1,5 +1,6 @@
 package com.mnidersoft.movieclient.ui.search;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
+import com.mnidersoft.movieclient.model.Movie;
 import com.mnidersoft.movieclient.model.MoviesResponse;
 import com.mnidersoft.movieclient.presentation.search.SearchPresenter;
 import com.mnidersoft.movieclient.presentation.search.SearchView;
 import com.mnidersoft.movieclient.ui.EndlessRecyclerScrollListener;
 import com.mnidersoft.movieclient.ui.MoviesAdapter;
+import com.mnidersoft.movieclient.util.AppUtil;
+import com.mnidersoft.movieclient.viewmodel.MainViewModel;
+import com.mnidersoft.movieclient.viewmodel.SearchViewModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,6 +64,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @Inject
     protected SearchPresenter mPresenter;
 
+    private SearchViewModel mModel;
+
     private MoviesAdapter mAdapter;
 
     private String currentQuery;
@@ -81,53 +90,56 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         mMoviesView.addOnScrollListener(new EndlessRecyclerScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                mPresenter.searchMoviesByTitle(currentQuery, currentPage);
+                mModel.loadMovies(currentQuery, currentPage);
             }
         });
 
         mMoviesView.setLayoutManager(layoutManager);
         mMoviesView.setAdapter(mAdapter);
 
-        mSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                    event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+        mSearchEditText.setOnEditorActionListener((v, actId, e) -> {
+            if (actId == EditorInfo.IME_ACTION_SEARCH || e.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 currentQuery = v.getText().toString();
 
                 InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (in != null) in.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 clear();
-                searchMoviesByTitle();
+                v.clearFocus();
+                mModel.loadMovies(currentQuery);
                 return true;
             }
             return false;
         });
-    }
 
-    private void searchMoviesByTitle() {
-        if (mPresenter != null) mPresenter.searchMoviesByTitle(currentQuery);
+        mModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        mModel.setPresenter(mPresenter);
+        if (mModel.hasMovies()) {
+            mSearchEditText.setText(mModel.getQuery());
+            mAdapter.addAll(mModel.getMovies());
+        } else {
+            showEmptyMessage();
+        }
     }
 
     @Override
     public Action showLoading() {
-        return () -> {
-            mLoading.setVisibility(View.VISIBLE);
-        };
+        return () -> mLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public Action hideLoading() {
-        return () -> {
-            mLoading.setVisibility(View.GONE);
-        };
+        return () -> mLoading.setVisibility(View.GONE);
     }
 
     @Override
     public Action showEmpty() {
-        return () -> {
-            mErrorMessage.setVisibility(View.VISIBLE);
-            mErrorMessage.setText(R.string.empty_message);
-        };
+        return this::showEmptyMessage;
+    }
+
+    private void showEmptyMessage() {
+        mErrorMessage.setVisibility(View.VISIBLE);
+        mErrorMessage.setText(R.string.empty_message);
     }
 
     @Override
@@ -165,9 +177,17 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         return flow
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        moviesResponse -> mAdapter.addAll(moviesResponse.getResults()),
+                        moviesResponse -> {
+                            if (AppUtil.isNullOrEmpty(moviesResponse.getResults())) showEmpty().run();
+                            else fillRecyclerView(moviesResponse.getResults());
+                            mModel.setMovies(mAdapter.getItems());
+                        },
                         throwable -> Log.e(TAG, "Error -> " + throwable.getMessage()),
                         () -> Log.i(TAG, "Done")
                 );
+    }
+
+    private void fillRecyclerView(List<Movie> movies) {
+        mAdapter.addAll(movies);
     }
 }

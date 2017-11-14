@@ -31,10 +31,6 @@ public class SearchPresenter {
         mStrategist = strategist;
     }
 
-    public void searchMoviesByTitle(String query) {
-        searchMoviesByTitle(query, 1);
-    }
-
     public void searchMoviesByTitle(String query, int page) {
         if (AppUtil.isNullOrEmpty(query)) return;
         mPage = page;
