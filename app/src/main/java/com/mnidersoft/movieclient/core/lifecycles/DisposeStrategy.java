@@ -21,6 +21,6 @@ public class DisposeStrategy implements LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
-        mComposite.dispose();
+        mComposite.clear();
     }
 }

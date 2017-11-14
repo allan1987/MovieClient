@@ -30,11 +30,7 @@ public class MainPresenter {
         mStrategist = strategist;
     }
 
-    public void loadNowPlayingMovies() {
-        loadNowPlayingMovies(1);
-    }
-
-    public void loadNowPlayingMovies(int page) {
+    public void loadMovies(int page) {
         mPage = page;
 
         Flowable<MoviesResponse> dataFlow = mRestClient.loadNowPlayingMovies(mPage).compose(mCoordinator);

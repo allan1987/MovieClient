@@ -104,4 +104,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         return position;
     }
+
+    public List<Movie> getItems() {
+        return mMovies;
+    }
 }

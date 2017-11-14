@@ -1,5 +1,6 @@
 package com.mnidersoft.movieclient.ui.main;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,12 +15,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mnidersoft.movieclient.R;
+import com.mnidersoft.movieclient.model.Movie;
 import com.mnidersoft.movieclient.model.MoviesResponse;
 import com.mnidersoft.movieclient.presentation.main.MainPresenter;
 import com.mnidersoft.movieclient.presentation.main.MainView;
 import com.mnidersoft.movieclient.ui.EndlessRecyclerScrollListener;
 import com.mnidersoft.movieclient.ui.MoviesAdapter;
 import com.mnidersoft.movieclient.ui.search.SearchActivity;
+import com.mnidersoft.movieclient.util.AppUtil;
+import com.mnidersoft.movieclient.viewmodel.MainViewModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private MenuItem mSearchItem;
 
+    private MainViewModel mModel;
+
     private MoviesAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         AndroidInjection.inject(this);
+        AndroidInjection.inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mMoviesView.addOnScrollListener(new EndlessRecyclerScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                mPresenter.loadNowPlayingMovies(currentPage);
+                mModel.loadMovies(currentPage);
             }
         });
 
@@ -91,17 +99,24 @@ public class MainActivity extends AppCompatActivity implements MainView {
             loadMovies();
         });
 
-        loadMovies();
+        mModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mModel.setPresenter(mPresenter);
+
+        if (mModel.hasMovies()) mAdapter.addAll(mModel.getMovies());
+        else loadMovies();
     }
 
     private void loadMovies() {
-        if (mPresenter != null) mPresenter.loadNowPlayingMovies();
+        mModel.loadMovies();
     }
 
     @Override
     public Action showLoading() {
         return () -> {
-            if (!mSwipeRefresh.isRefreshing()) mLoading.setVisibility(View.VISIBLE);
+            if (!mSwipeRefresh.isRefreshing()) {
+                mSwipeRefresh.setEnabled(false);
+                mLoading.setVisibility(View.VISIBLE);
+            }
         };
     }
 
@@ -109,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public Action hideLoading() {
         return () -> {
             mLoading.setVisibility(View.GONE);
+            if (!mSwipeRefresh.isEnabled()) mSwipeRefresh.setEnabled(true);
             mSwipeRefresh.setRefreshing(false);
         };
     }
@@ -156,10 +172,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
         return flow
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        moviesResponse -> mAdapter.addAll(moviesResponse.getResults()),
+                        moviesResponse -> {
+                            if (AppUtil.isNullOrEmpty(moviesResponse.getResults())) showEmpty().run();
+                            else fillRecyclerView(moviesResponse.getResults());
+                            mModel.setMovies(mAdapter.getItems());
+                        },
                         throwable -> Log.e(TAG, "Error -> " + throwable.getMessage()),
                         () -> Log.i(TAG, "Done")
                 );
+    }
+
+    private void fillRecyclerView(List<Movie> movies) {
+        mAdapter.addAll(movies);
     }
 
     @Override
