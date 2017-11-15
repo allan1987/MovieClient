@@ -12,7 +12,7 @@ import java.util.List;
 public class MovieDetails implements Serializable {
 
     @SerializedName("vote_average")
-    private Float voteAverage;
+    private Double voteAverage;
 
     @SerializedName("backdrop_path")
     private String backdropPath;
@@ -20,30 +20,15 @@ public class MovieDetails implements Serializable {
     @SerializedName("release_date")
     private String releaseDate;
 
-    @SerializedName("spoken_languages")
-    private List<ListItem> spoken_languages;
-
-    private Long budget;
-
-    private List<ListItem> genres;
-
-    private String homepage;
-
     private String overview;
-
-    private Long revenue;
-
-    private String status;
-
-    private String tagline;
 
     private String title;
 
-    public Float getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(Float voteAverage) {
+    public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -63,68 +48,12 @@ public class MovieDetails implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    public List<ListItem> getSpoken_languages() {
-        return spoken_languages;
-    }
-
-    public void setSpoken_languages(List<ListItem> spoken_languages) {
-        this.spoken_languages = spoken_languages;
-    }
-
-    public Long getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Long budget) {
-        this.budget = budget;
-    }
-
-    public List<ListItem> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<ListItem> genres) {
-        this.genres = genres;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(String homepage) {
-        this.homepage = homepage;
-    }
-
     public String getOverview() {
         return overview;
     }
 
     public void setOverview(String overview) {
         this.overview = overview;
-    }
-
-    public Long getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(Long revenue) {
-        this.revenue = revenue;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTagline() {
-        return tagline;
-    }
-
-    public void setTagline(String tagline) {
-        this.tagline = tagline;
     }
 
     public String getTitle() {

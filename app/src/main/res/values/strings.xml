@@ -7,4 +7,7 @@
     <string name="search_hint">Search by title</string>
     <string name="main_activity_title">Now Playing Movies</string>
     <string name="details_activity_title">Movie Details</string>
+
+    <string name="release_date_text">Release date: %1$s</string>
+    <string name="average_vote_text">Average vote: %1$s</string>
 </resources>
