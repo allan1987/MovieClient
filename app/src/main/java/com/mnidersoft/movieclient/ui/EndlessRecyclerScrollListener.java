@@ -39,7 +39,8 @@ public abstract class EndlessRecyclerScrollListener extends RecyclerView.OnScrol
             }
         }
         int visibleThreshold = 5;
-        if (!mLoading && (totalItemCount - visibleItemCount)
+        int itemsPerPage = 10;
+        if (!mLoading && totalItemCount >= itemsPerPage && (totalItemCount - visibleItemCount)
                 <= (firstVisibleItem + visibleThreshold)) {
             mCurrentPage++;
             onLoadMore(mCurrentPage);

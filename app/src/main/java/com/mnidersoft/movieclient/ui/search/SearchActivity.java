@@ -178,7 +178,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         moviesResponse -> {
-                            if (AppUtil.isNullOrEmpty(moviesResponse.getResults())) showEmpty().run();
+                            if (AppUtil.isNullOrEmpty(moviesResponse.getResults())
+                                    && mAdapter.getItemCount() == 0) showEmpty().run();
                             else fillRecyclerView(moviesResponse.getResults());
                             mModel.setMovies(mAdapter.getItems());
                         },
