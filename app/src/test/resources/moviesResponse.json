@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "vote_count": 42,
+      "id": 395991,
+      "video": false,
+      "vote_average": 5.5,
+      "title": "Only the Brave",
+      "popularity": 93.484474,
+      "poster_path": "/lC7WdUNLOJI3sllaDGNdFy2GT8g.jpg",
+      "original_language": "en",
+      "original_title": "Only the Brave",
+      "genre_ids": [
+        18
+      ],
+      "backdrop_path": "/8wI0M7HDHhDsoxMCkcAVUx7O6DX.jpg",
+      "adult": false,
+      "overview": "Members of the Granite Mountain Hotshots battle deadly wildfires to save an Arizona town.",
+      "release_date": "2017-10-19"
+    },
+    {
+      "vote_count": 19,
+      "id": 383709,
+      "video": false,
+      "vote_average": 5.8,
+      "title": "Wonderstruck",
+      "popularity": 90.248172,
+      "poster_path": "/yjDAt9K3FKU1itABgIXl6YvLsVE.jpg",
+      "original_language": "en",
+      "original_title": "Wonderstruck",
+      "genre_ids": [
+        18
+      ],
+      "backdrop_path": "/eUSNKg5tlocYAQs5nHlDxyAefuB.jpg",
+      "adult": false,
+      "overview": "The story of a young boy in the Midwest is told simultaneously with a tale about a young girl in New York from fifty years ago as they both seek the same mysterious connection.",
+      "release_date": "2017-10-20"
+    }
+  ],
+  "page": 1,
+  "total_results": 1180,
+  "dates": {
+    "maximum": "2017-11-13",
+    "minimum": "2017-09-25"
+  },
+  "total_pages": 59
+}
