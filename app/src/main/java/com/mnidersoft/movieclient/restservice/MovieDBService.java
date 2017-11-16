@@ -15,7 +15,6 @@ import retrofit2.http.Query;
 public interface MovieDBService {
 
     String BASE_URL = "https://api.themoviedb.org/";
-
     String API_KEY = "1b967111e1e661560ed39ab7cc61230d";
 
     @GET("4/discover/movie?vote_average.gte=5&with_release_type=2|3&api_key=" + API_KEY)

@@ -17,9 +17,9 @@ import io.reactivex.Scheduler;
 
 public class RestClient {
 
-    MovieDBService mService;
-    Scheduler mScheduler;
-    String mLanguage;
+    private MovieDBService mService;
+    private Scheduler mScheduler;
+    private String mLanguage;
 
     public RestClient(MovieDBService service, Scheduler ioScheduler) {
         mService = service;

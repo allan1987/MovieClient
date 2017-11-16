@@ -1,71 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDarkerGray"
-    tools:context=".ui.details.DetailsActivity"
-    android:padding="8dp">
+    android:background="@color/colorDarkerGray">
 
-    <ImageView
-        android:id="@+id/backdrop_image"
+    <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
+        android:layout_height="match_parent"
+        tools:context=".ui.details.DetailsActivity"
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/backdrop_image"
-        android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"/>
+        <ImageView
+            android:id="@+id/backdrop_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/release_date_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/title_text"/>
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/backdrop_image"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"/>
 
-    <TextView
-        android:id="@+id/vote_average_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/release_date_text"
-        android:layout_toEndOf="@+id/release_date_text"
-        android:layout_below="@+id/title_text"/>
+        <TextView
+            android:id="@+id/release_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/title_text"/>
 
-    <TextView
-        android:id="@+id/overview_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/release_date_text"/>
+        <TextView
+            android:id="@+id/vote_average_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/release_date_text"
+            android:layout_toEndOf="@+id/release_date_text"
+            android:layout_below="@+id/title_text"/>
 
-    <TextView
-        android:id="@+id/error_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        tools:text="Um erro aconteceu" />
+        <TextView
+            android:id="@+id/overview_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:layout_below="@+id/release_date_text"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            tools:text="Um erro aconteceu" />
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</ScrollView>
